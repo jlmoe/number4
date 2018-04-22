@@ -8,7 +8,7 @@
 char * DecimalToBinaryString(const unsigned int decimal);
 
 //function that identifies unique words in a string. It is case insensitive and words can be separated with multiple spaces
-//char ** FindUniqueWords(const char * string, int * number of words found);
+char ** FindUniqueWords(const char * string, int * numWords);
 
 //function that counts the number of prime numbers between two numbers
 //int CountPrimeNumbersInRange(const int int_1, const int int_2);

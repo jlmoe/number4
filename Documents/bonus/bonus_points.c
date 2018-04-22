@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "stack.h"
+#include "stringQueue.h"
+
 char * DecimalToBinaryString(unsigned int decimal){
 	char * result;
 	unsigned int decimalCpy = decimal;
@@ -31,6 +33,53 @@ char * DecimalToBinaryString(unsigned int decimal){
 	return result;
 }
 
+char ** FindUniqueWords(const char * string, int * numWords){
+
+	if(string == NULL || numWords == NULL) return NULL;
+
+	char ** result;
+	char * currentSubstring;
+	char * split = " ";
+	int stringLength = strlen(string);
+	Queue wordQ = CreateQueue();
+	strcpy(currentSubstring, string);
+	char * currentChar = currentSubstring;
+	int diff = 0;
+	int i = 0;
+	int noWordsFlag = FALSE;
+	*numWords = 0;
+	while(i < stringLength){
+		if(*currentChar == *split){
+			diff = currentChar - currentSubstring;
+			currentSubstring[diff+1] = '\0';
+			if(SearchQueue(wordQ, currentSubstring)){
+				Enqueue(currentSubstring, wordQ);
+				*numWords++;
+				currentSubstring = currentSubstring + diff + 1;
+			}
+			else{
+				currentSubstring = currentSubstring + diff + 1;
+			}
+		}
+		currentChar++;
+		i++;
+	}
+
+	if(numWords == 0) {
+		noWordsFlag = TRUE;
+	}
+	result = (char**) malloc(sizeof(char*) * numWords + (noWordsFlag * sizeof(char*)));
+	if(result == NULL) return NULL;
+
+	for(i = 0; i < numWords; i++){
+		result[i] = Dequeue(wordQ);
+	}
+	return result;
+}
+
+
+
+
 void ReverseString(char * string){
 	Stack * reverseStack = CreateStack();
 	int i = 0;
@@ -39,6 +88,6 @@ void ReverseString(char * string){
 	}
 	i = 0;
 	while(reverseStack->top != NULL){
-		string[i++] = Pop(reverseStack);
+		string[i++] = (char) Pop(reverseStack);
 	}
 }
