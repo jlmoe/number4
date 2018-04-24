@@ -35,26 +35,68 @@ char * DecimalToBinaryString(unsigned int decimal){
 
 char ** FindUniqueWords(const char * string, int * numWords){
 
-	if(string == NULL || numWords == NULL) return NULL;
-
+	if(string == NULL || numWords == NULL) return NULL;//NULL protection
+	//Variable initialization
 	char ** result;
-	char * currentSubstring;
+//	char * currentSubstring;
 	char * split = " ";
+	fprintf(stdout, "MEMES\n");
+
 	int stringLength = strlen(string);
-	Queue wordQ = CreateQueue();
-	strcpy(currentSubstring, string);
-	char * currentChar = currentSubstring;
+	Queue * wordQ = CreateQueue();
+	fprintf(stdout, "MEMES\n");
+
+/*	for(char * str_ptr = string; *str_ptr != '\0'; str_ptr++){
+
+	}
+*/
+
+	//char * currentChar = string;
+	//char * startOfWord = currentChar;
+	int startOfWord = string;
+	int currentChar = string;
+	char * substring = (char*) malloc(sizeof(char) * stringLength);
+
 	int diff = 0;
-	int i = 0;
 	int noWordsFlag = FALSE;
 	*numWords = 0;
-	while(i < stringLength){
+	int index = 0;
+
+	fprintf(stdout, "MEMES\n");
+
+	while(index < stringLength){
+		fprintf(stdout, "iteration %d\n", index);
+		if(string[currentChar] == * split){
+			diff = currentChar - startOfWord;
+			int i = 0;
+			for(i = 0; i < diff; i++){
+				substring[i] = string[startOfWord];
+			}
+			substring[i] = '\0';
+			if(SearchQueue(wordQ, substring)){
+				Enqueue(substring, wordQ);
+				*(numWords)++;
+				startOfWord = ++currentChar;
+			}
+			else{
+				startOfWord = ++currentChar;
+			}
+		}
+
+		currentChar++;
+	}
+
+	free(substring);
+
+
+	//look for words
+/*	while(i < stringLength){
 		if(*currentChar == *split){
 			diff = currentChar - currentSubstring;
 			currentSubstring[diff+1] = '\0';
 			if(SearchQueue(wordQ, currentSubstring)){
 				Enqueue(currentSubstring, wordQ);
-				*numWords++;
+				(*numWords)++;
 				currentSubstring = currentSubstring + diff + 1;
 			}
 			else{
@@ -64,19 +106,69 @@ char ** FindUniqueWords(const char * string, int * numWords){
 		currentChar++;
 		i++;
 	}
+*/
+
+
+	fprintf(stdout, "MEMES\n");
 
 	if(numWords == 0) {
 		noWordsFlag = TRUE;
 	}
-	result = (char**) malloc(sizeof(char*) * numWords + (noWordsFlag * sizeof(char*)));
-	if(result == NULL) return NULL;
-
-	for(i = 0; i < numWords; i++){
-		result[i] = Dequeue(wordQ);
+	result = (char**) malloc(sizeof(char*) * (*numWords) + (noWordsFlag * sizeof(char*)));
+	if(result == NULL){
+		return NULL;
+		free(result);
 	}
+
+	for(int i = 0; i < *numWords; i++){
+		char * temp = Dequeue(wordQ);
+		result[i] = temp;
+	}
+	DestroyQueue(&wordQ);
+	fprintf(stdout, "MEMES\n");
+
 	return result;
 }
 
+
+int FindSubstring(const char * string, const char * substring){
+	if(string == NULL || substring == NULL){
+		return -1;
+	}
+
+	int position;
+	int positionFound = FALSE;
+/*	while(position < strlen(string) && !positionFound){
+		for(int i = 0; position + i < strlen(string) && !positionFound; i++){
+			if(string[position + i] != substring[i]){
+				if(position + i == strlen(substring - 1)){
+					positionFound = TRUE;
+				}
+			}
+		}
+		position++;
+	}
+*/
+	int i;
+	while(!positionFound && position < strlen(string) ){
+		i = 0;
+		while(string[position + i] == substring[i]){
+			printf(" !! \n");
+			if(i == strlen(substring) - 1){
+				positionFound = TRUE;
+			}
+			i++;
+		}
+		if(positionFound) break;
+		position++;
+	}
+
+	if(!positionFound){
+		position = -1;
+	}
+
+	return position;
+}
 
 
 

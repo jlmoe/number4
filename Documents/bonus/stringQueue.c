@@ -28,7 +28,7 @@ void DestroyQueue(Queue ** queuePtr){
 	//queuePtr == NULL;
 }
 
-void Enqueue(const char * string, Queue * queue){
+void Enqueue(char * string, Queue * queue){
 	if(queue == NULL || string == NULL){ //function protection
 		return;
 	}
@@ -61,7 +61,7 @@ char * Dequeue(Queue * queue){
 	}
 
 	StrNode * temp = queue->front;
-	const char * result = temp->string;
+	char * result = temp->string;
 	queue->front = temp->next;
 	free(temp);
 	temp = NULL;
@@ -69,7 +69,7 @@ char * Dequeue(Queue * queue){
 	return result;
 }
 
-StrNode * CreateStrNode(const char * string){
+StrNode * CreateStrNode(char * string){
 	StrNode * node = (StrNode*) malloc(sizeof(StrNode));
 	if(node == NULL){
 		return NULL;

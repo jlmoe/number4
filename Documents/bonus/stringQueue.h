@@ -10,7 +10,7 @@
 #define STRINGQUEUE_H
 
 typedef struct StrNode{
-	const char * string;
+	char * string;
 	struct StrNode * next;
 }StrNode;
 
@@ -22,11 +22,11 @@ Queue * CreateQueue();
 
 void DestroyQueue(Queue ** queue);
 
-void Enqueue(const char * string, Queue * queue);
+void Enqueue(char * string, Queue * queue);
 
 char * Dequeue(Queue * queue);
 
-StrNode * CreateStrNode(const char * string);
+StrNode * CreateStrNode(char * string);
 
 const int SearchQueue(Queue * queue, char * string);
 
